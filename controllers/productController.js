@@ -1,5 +1,5 @@
 // /controllers/productController.js
-const { getAllProducts, createProduct, deleteProduct } = require ('../models/productModel.js'); // Importa o modelo de produto
+const { getAllProducts, createProduct, deleteProduct, updateProduct: updateProductModel } = require ('../models/productModel.js');
 
 const listarProdutos = (req, res) => {
   getAllProducts((err, results) => {
@@ -31,8 +31,39 @@ const excluirProduto = (req, res) => {
   });
 };
 
+const updateProduct = (req, res) => {
+  const id = req.params.id;
+  const produto = req.body;
+
+  updateProductModel(id, produto, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Erro ao atualizar produto' });
+    }
+    res.status(200).json({ message: 'Produto atualizado com sucesso', id, ...produto });
+  });
+};
+
+const { getProductById } = require('../models/productModel');
+
+const buscarProdutoPorId = (req, res) => {
+  const id = req.params.id;
+
+  getProductById(id, (err, results) => {
+    if (err) return res.status(500).send(err);
+
+    if (results.length === 0) {
+      return res.status(404).send({ message: 'Produto não encontrado' });
+    }
+
+    res.status(200).json(results[0]);
+  });
+};
+
+
 module.exports = {
   listarProdutos,
   adicionarProduto,
-  excluirProduto
+  excluirProduto,
+  updateProduct,
+  buscarProdutoPorId,
 };

@@ -5,6 +5,11 @@ const getAllProducts = (callback) => {
   db.query('SELECT * FROM produtos', callback);
 };
 
+const getProductById = (id, callback) => {
+  db.query('SELECT * FROM produtos WHERE id = ?', [id], callback);
+};
+
+
 const createProduct = (produto, callback) => {
   const { nome, descricao, preco , estoque, foto } = produto;
   db.query(
@@ -18,9 +23,20 @@ const deleteProduct = (id, callback) => {
   db.query('DELETE FROM produtos WHERE id = ?', [id], callback);
 };
 
+const updateProduct = (id, produto, callback) => {
+  const { nome, descricao, preco, estoque, foto } = produto;
+  db.query(
+    'UPDATE produtos SET nome = ?, descricao = ?, preco = ?, estoque = ?, foto = ? WHERE id = ?',
+    [nome, descricao, preco, estoque, foto, id],
+    callback
+  );
+};
+
 
 module.exports = {
   getAllProducts,
   createProduct,
-  deleteProduct
+  deleteProduct,
+  updateProduct,
+  getProductById,
 };

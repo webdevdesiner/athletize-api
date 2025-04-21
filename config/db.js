@@ -1,7 +1,5 @@
-// db.js
-
 const mysql = require('mysql2');
-// import mysql from 'mysql2';
+
 
 const connection = mysql.createConnection({
   host: 'localhost', // ou o IP do servidor
@@ -20,4 +18,3 @@ connection.connect((err) => {
 });
 
 module.exports = connection;
-// export default connection;
