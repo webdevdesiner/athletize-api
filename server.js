@@ -41,6 +41,7 @@ app.get('/', (req, res) => {
 // ✅ ROTA da API
 app.use('/api/produtos', productRoutes); // Usa as rotas de produtos
 
+
 // Testar a conexão com o banco de dados
 db.connect((err) => {
   if (err) {
