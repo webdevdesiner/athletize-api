@@ -33,6 +33,7 @@ const updateProduct = (id, produto, callback) => {
 };
 
 
+
 module.exports = {
   getAllProducts,
   createProduct,

@@ -9,12 +9,19 @@ const listarProdutos = (req, res) => {
 };
 
 const adicionarProduto = (req, res) => {
-  const produto = req.body;
+  console.log('Arquivo recebido:', req.file);
+  const { nome, descricao, preco, estoque } = req.body;
+  const foto = req.file ? req.file.filename : null;
+  const fotoPath = req.file ? `/uploads/${req.file.filename}` : '';
+
+  const produto = { nome, descricao, preco, estoque, foto: fotoPath };
+
   createProduct(produto, (err, result) => {
     if (err) return res.status(500).send(err);
     res.status(201).send({ id: result.insertId, ...produto });
   });
 };
+
 
 const excluirProduto = (req, res) => {
   const id = req.params.id;
@@ -31,17 +38,26 @@ const excluirProduto = (req, res) => {
   });
 };
 
+
+
 const updateProduct = (req, res) => {
   const id = req.params.id;
-  const produto = req.body;
+  const { nome, descricao, preco, estoque } = req.body;
+  const foto = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const produto = { nome, descricao, preco, estoque, foto };
 
   updateProductModel(id, produto, (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: 'Erro ao atualizar produto' });
+    if (err) return res.status(500).send(err);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send({ message: 'Produto não encontrado!' });
     }
-    res.status(200).json({ message: 'Produto atualizado com sucesso', id, ...produto });
+
+    res.status(200).send({ message: 'Produto atualizado com sucesso!', produto });
   });
 };
+
 
 const { getProductById } = require('../models/productModel');
 
@@ -58,6 +74,8 @@ const buscarProdutoPorId = (req, res) => {
     res.status(200).json(results[0]);
   });
 };
+
+
 
 
 module.exports = {
