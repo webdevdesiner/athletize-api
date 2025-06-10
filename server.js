@@ -5,7 +5,9 @@ const db = require('./config/db'); // Importa a configuração do banco
 const productRoutes = require('./routes/productRoutes');  // Importa as rotas de produtos
 
 const app = express();
-const port = 3000;
+// const port = 3000; inultilizei essa porta, pois o front-end está na porta 3000
+
+const port = process.env.PORT || 3000; // inclui essa no lugar//
 
 // Configuração de upload de arquivos
 const path = require('path');
